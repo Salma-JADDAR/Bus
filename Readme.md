@@ -114,4 +114,4 @@ Projet réalisé par une étudiante dans le cadre de sa formation universitaire.
 
 ---
 
-✅ *Ce README sert de document de présentation générale du projet.*
+

@@ -275,6 +275,7 @@ Le diagramme de classes proposé est aligné avec le modèle que nous avons con�
 #### Classe Client (hérite de Utilisateur)
 
 * Attributs : telephone:int
+
 * Méthodes : creerReservation(voyage:Voyage, sieges:List<Siege>):Reservation, consulterReservations():List<Reservation>, donnerAvis(voyage:Voyage, commentaire:String, note:int):Avis
 
 #### Classe Reservation
