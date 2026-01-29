@@ -13,7 +13,7 @@ use App\Http\Controllers\CityController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('homepage');
 
 /*
 Route::get('/cities', [CityController::class, 'index']);
@@ -25,28 +25,30 @@ Route::get('/cities', [CityController::class, 'index']);
 */
 
 
-//Route::get('/hello', function () {
-    //return view('hello');
-//});
+Route::get('/hello', function () {
+   return view('hello');
+});
+Route::get('/cities', function () {
+     return 'liste des villes';
+ });    
 
-// Route nommée
-//->name('homepage');
 
-// Route avec paramètre
+
+
 // Exemple : /user/5
-//Route::get('/user/{id}', function ($id) {
-    //return "User ID : " . $id;
-//});
+Route::get('/user/{id}', function ($id) {
+    return "User ID : " . $id;
+});
 
 // Redirection (2 façons)
 
 // Avec redirect()
-//Route::get('/salam', function () {
-   // return redirect('/hello');
-//});
+Route::get('/salam', function () {
+    return redirect('/hello');
+});
 
 // Avec Route::redirect (plus court)
-//Route::redirect('/bonjour', '/hello');
+Route::redirect('/bonjour', '/hello');
 
 /*
 |--------------------------------------------------------------------------
