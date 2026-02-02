@@ -6,22 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('programmes', function (Blueprint $table) {
             $table->id();
+            $table->time('heure_arrivee');
+            $table->boolean('actif')->default(true);
+            $table->foreignId('bus_id')->constrained();
+            $table->foreignId('route_id')->constrained();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('programmes');
     }
 };

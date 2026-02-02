@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
-
-
+use Illuminate\Http\Request;
+use App\Http\Controllers\homecontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('homepage');
 
+Route::get('/', [homecontroller::class,'index']);
 /*
 Route::get('/cities', [CityController::class, 'index']);
 */
@@ -43,8 +44,12 @@ Route::get('/user/{id}', function ($id) {
 // Redirection (2 façons)
 
 // Avec redirect()
-Route::get('/salam', function () {
-    return redirect('/hello');
+Route::get('/salam/{nom}/{prenom}', function (Request $request) {
+    dd($request ->nom);
+    return view('salam',[
+        'nom' => "JADDAR",
+        'prenom' => "Salma"
+    ]);
 });
 
 // Avec Route::redirect (plus court)
