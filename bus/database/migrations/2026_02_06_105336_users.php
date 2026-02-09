@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['client', 'admin'])->default('client');
             $table->string('phone', 20)->nullable();
+            $table->foreignId('ville_id')->nullable()->constrained();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -13,6 +13,8 @@ return new class extends Migration
             $table->decimal('tarif', 8, 2);
             $table->time('duree_estimee');
             $table->float('distance_km');
+            $table->foreignId('ville_depart_id')->constrained('villes');
+            $table->foreignId('ville_arrivee_id')->constrained('villes');
             $table->foreignId('programme_id')->constrained()->onDelete('cascade');
             $table->foreignId('depart_etape_id')->constrained('etapes');
             $table->foreignId('arrivee_etape_id')->constrained('etapes');

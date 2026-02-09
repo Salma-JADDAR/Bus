@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->string('nom_route');
-            $table->string('ville_depart');
-            $table->string('ville_arrivee');
+            $table->foreignId('ville_depart_id')->constrained('villes');
+            $table->foreignId('ville_arrivee_id')->constrained('villes');
             $table->text('description')->nullable();
             $table->timestamps();
         });

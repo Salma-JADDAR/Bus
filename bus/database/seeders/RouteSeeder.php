@@ -3,34 +3,55 @@
 namespace Database\Seeders;
 
 use App\Models\Route;
+use App\Models\Ville;
 use Illuminate\Database\Seeder;
 
 class RouteSeeder extends Seeder
 {
     public function run(): void
     {
-        Route::create([
-            'nom_route' => 'Casablanca - Marrakech',
-            'ville_depart' => 'Casablanca',
-            'ville_arrivee' => 'Marrakech',
-            'description' => 'Route principale entre les deux grandes villes',
-        ]);
-
-        Route::create([
-            'nom_route' => 'Rabat - Fès',
-            'ville_depart' => 'Rabat',
-            'ville_arrivee' => 'Fès',
-            'description' => 'Route vers la capitale spirituelle',
-        ]);
-
-        Route::create([
-            'nom_route' => 'Tanger - Agadir',
-            'ville_depart' => 'Tanger',
-            'ville_arrivee' => 'Agadir',
-            'description' => 'Route côtière nord-sud',
-        ]);
-
-        // Ajouter 2 routes supplémentaires
-        Route::factory(2)->create();
+        $routesPrincipales = [
+            ['Casablanca', 'Rabat'],
+            ['Casablanca', 'Marrakech'],
+            ['Rabat', 'Fès'],
+            ['Tanger', 'Casablanca'],
+            ['Agadir', 'Marrakech'],
+            ['Fès', 'Oujda'],
+            ['Marrakech', 'Safi'],
+            ['Casablanca', 'El Jadida'],
+        ];
+        
+        foreach ($routesPrincipales as $routeVilles) {
+            $villeDepart = Ville::where('nom', $routeVilles[0])->first();
+            $villeArrivee = Ville::where('nom', $routeVilles[1])->first();
+            
+            if ($villeDepart && $villeArrivee) {
+                $nomRoute = $villeDepart->nom . ' - ' . $villeArrivee->nom;
+                
+                Route::firstOrCreate(
+                    [
+                        'ville_depart_id' => $villeDepart->id,
+                        'ville_arrivee_id' => $villeArrivee->id,
+                    ],
+                    [
+                        'nom_route' => $nomRoute,
+                        'description' => 'Route directe ' . $nomRoute,
+                    ]
+                );
+            }
+        }
+        
+        $this->command->info('Routes principales créées/mises à jour.');
+        
+        // Ajouter quelques routes aléatoires si nécessaire
+        $existingRoutes = Route::count();
+        if ($existingRoutes < 10) {
+            $routesToCreate = 10 - $existingRoutes;
+            Route::factory($routesToCreate)->create();
+            $this->command->info("{$routesToCreate} routes supplémentaires créées.");
+        }
+        
+        $totalRoutes = Route::count();
+        $this->command->info("Total: {$totalRoutes} routes dans la base de données.");
     }
 }

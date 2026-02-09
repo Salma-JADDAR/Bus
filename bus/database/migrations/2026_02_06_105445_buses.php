@@ -14,6 +14,7 @@ return new class extends Migration
             $table->integer('capacite');
             $table->string('marque')->nullable();
             $table->string('modele')->nullable();
+            $table->foreignId('ville_id')->nullable()->constrained();
             $table->boolean('disponible')->default(true);
             $table->timestamps();
         });

@@ -19,10 +19,16 @@ class SegmentFactory extends Factory
             $arrivee = $etapes->where('id', '!=', $depart->id)->random();
         }
         
+        // Récupérer les villes depuis les gares
+        $villeDepart = $depart->gare->ville;
+        $villeArrivee = $arrivee->gare->ville;
+        
         return [
             'tarif' => $this->faker->randomFloat(2, 50, 500),
             'duree_estimee' => $this->faker->time('H:i', '04:00'),
             'distance_km' => $this->faker->randomFloat(2, 100, 500),
+            'ville_depart_id' => $villeDepart->id,
+            'ville_arrivee_id' => $villeArrivee->id,
             'programme_id' => $programme->id,
             'depart_etape_id' => $depart->id,
             'arrivee_etape_id' => $arrivee->id,

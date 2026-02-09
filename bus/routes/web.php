@@ -1,102 +1,40 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CityController;
-use Illuminate\Http\Request;
-use App\Http\Controllers\homecontroller;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 
-/*
-|--------------------------------------------------------------------------
-| Route simple (page d'accueil)
-|--------------------------------------------------------------------------
-*/
+// Page d'accueil
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
+// Routes d'authentification
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
-Route::get('/', [homecontroller::class,'index']);
-/*
-Route::get('/cities', [CityController::class, 'index']);
-*/
-/*
-|--------------------------------------------------------------------------
-| Exemple de routes simples (sans resource)
-|--------------------------------------------------------------------------
-*/
+// Routes publiques
+Route::get('/search', [SearchController::class, 'showForm'])->name('search.form');
+Route::post('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/reservation/verify/{numero}', [ReservationController::class, 'verify'])->name('reservation.verify');
 
-
-Route::get('/hello', function () {
-   return view('hello');
+// Routes protégées (nécessitent une connexion)
+Route::middleware(['auth'])->group(function () {
+    // Réservation
+    Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
+    Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+    
+    // Gestion réservation
+    Route::get('/reservation/{reservation}', [ReservationController::class, 'confirmation'])->name('reservation.confirmation');
+    Route::post('/reservation/{reservation}/payment', [ReservationController::class, 'payment'])->name('reservation.payment');
+   Route::get('/reservation/{reservation}/ticket', [ReservationController::class, 'downloadTicket'])
+    ->name('reservation.ticket');;
+    Route::post('/reservation/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
+    
+    // Mes réservations
+    Route::get('/mes-reservations', [ReservationController::class, 'index'])
+        ->name('reservation.index');
 });
-Route::get('/cities', function () {
-     return 'liste des villes';
- });    
-
-
-
-
-// Exemple : /user/5
-Route::get('/user/{id}', function ($id) {
-    return "User ID : " . $id;
-});
-
-// Redirection (2 façons)
-
-// Avec redirect()
-Route::get('/salam/{nom}/{prenom}', function (Request $request) {
-    dd($request ->nom);
-    return view('salam',[
-        'nom' => "JADDAR",
-        'prenom' => "Salma"
-    ]);
-});
-
-// Avec Route::redirect (plus court)
-Route::redirect('/bonjour', '/hello');
-
-/*
-|--------------------------------------------------------------------------
-| Exemple CRUD sans resource (manuel)
-|--------------------------------------------------------------------------
-| Ici on écrit chaque route à la main
-*/
-
-//Route::get('/cities', [CityController::class, 'index']);       // afficher la liste
-//Route::get('/cities/create', [CityController::class, 'create']); // formulaire
-//Route::post('/cities', [CityController::class, 'store']);      // sauvegarder
-//Route::get('/cities/{id}', [CityController::class, 'show']);   // afficher une ville
-//Route::get('/cities/{id}/edit', [CityController::class, 'edit']); // modifier
-//Route::put('/cities/{id}', [CityController::class, 'update']); // mettre à jour
-//Route::delete('/cities/{id}', [CityController::class, 'destroy']); // supprimer
-
-/*
-|--------------------------------------------------------------------------
-| Exemple CRUD avec resource
-|--------------------------------------------------------------------------
-| Laravel crée automatiquement toutes les routes CRUD
-*/
-
-//Route::resource('cities', CityController::class);
-
-/*
-|--------------------------------------------------------------------------
-| Exemple de Route Group avec prefix
-|--------------------------------------------------------------------------
-| Toutes les routes commencent par /admin
-*/
-
-//Route::prefix('admin')->group(function () {
-
-    // URL : /admin/dashboard
-    //Route::get('/dashboard', function () {
-        //return 'Admin Dashboard';
-    //});
-
-    // URL : /admin/users
-    //Route::get('/users', function () {
-       // return 'Liste des utilisateurs';
-    //});
-//});
-
-

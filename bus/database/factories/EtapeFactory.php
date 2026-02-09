@@ -8,13 +8,16 @@ class EtapeFactory extends Factory
 {
     public function definition(): array
     {
+        $route = \App\Models\Route::factory()->create();
+        $ville = \App\Models\Ville::find($route->ville_depart_id);
+        $gare = \App\Models\Gare::factory()->create(['ville_id' => $ville->id]);
+        
         return [
-            'nom_etape' => $this->faker->randomElement(['Gare Routière', 'Station Centrale', 'Arrêt Principal']) . ' ' . $this->faker->city(),
-            'adresse' => $this->faker->address(),
-            'ville' => $this->faker->city(),
+            'nom_etape' => 'Arrêt ' . $this->faker->streetName(),
             'heure_passage' => $this->faker->time('H:i'),
             'ordre' => $this->faker->numberBetween(1, 10),
-            'route_id' => \App\Models\Route::factory(),
+            'route_id' => $route->id,
+            'gare_id' => $gare->id,
         ];
     }
 }
